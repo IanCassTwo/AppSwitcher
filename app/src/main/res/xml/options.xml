@@ -1,0 +1,15 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <MultiSelectListPreference
+        android:dialogTitle="Package Selector"
+        android:key="packages"
+        android:summary="Select the apps that you'd like to switch between"
+        android:title="Apps"
+        android:entries="@array/empty_array"
+        android:entryValues="@array/empty_array"
+        android:defaultValue="@array/empty_array"
+        />
+
+</PreferenceScreen>

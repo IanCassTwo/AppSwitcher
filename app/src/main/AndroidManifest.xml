@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="uk.co.wheep.appswitcher"
+    android:versionCode="46"
+    android:versionName="1.5.5">
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:description="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_label"
+        android:theme="@style/AppTheme"
+        >
+
+
+        <!-- the start/launch activity -->
+        <activity
+            android:name="uk.co.wheep.appswitcher.SettingsActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.APP_MAPS" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <!-- other activities -->
+
+        <activity
+            android:name="uk.co.wheep.appswitcher.OptionsActivity"
+            android:parentActivityName="uk.co.wheep.appswitcher.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uk.co.wheep.appswitcher.SettingsActivity" />
+        </activity>
+
+        <!--
+        <activity
+            android:name="uk.co.wheep.appswitcher.SwitchActivity" android:launchMode="singleTask">
+            <intent-filter>
+                <category android:name="android.intent.category.APP_MAPS" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        -->
+
+        <!-- the services -->
+        <!--
+         <service
+            android:name="uk.co.wheep.appswitcher.service.ToastService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="uk.co.wheep.appswitcher.service.toast" />
+            </intent-filter>
+        </service>
+        -->
+
+        <!-- the receiver -->
+        <receiver
+            android:name=".SwitchActivity"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.APP_MAPS" />
+            </intent-filter>
+        </receiver>
+
+
+    </application>
+
+</manifest>
