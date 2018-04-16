@@ -23,8 +23,10 @@ package uk.co.wheep.appswitcher.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
@@ -48,13 +50,34 @@ public class AppSettings {
         return prefs.getStringSet(KEY_APP_PKGS, null);
     }
 
-    public String getNextPackage() {
+     public String getNextPackage(String currentPackage) {
+         Log.d(TAG, "Looking for " + currentPackage);
+
         Set<String> set = prefs.getStringSet(KEY_APP_PKGS, null);
         if (set == null)
             return null;
 
+        if (set.isEmpty()) {
+            return null;
+        }
+
+        String[] packages = set.toArray(new String[0]);
         Integer current = prefs.getInt(KEY_CURRENT, 0);
-        if (current < set.size() - 1) {
+
+         if (set.contains(currentPackage)) {
+             Log.d(TAG, "It's here somewhere");
+            // find it
+            for(int i = 0; i < packages.length; i++) {
+                if (packages[i].equals(currentPackage)) {
+                    Log.d(TAG, "Found it!");
+                    if (i < packages.length - 1) {
+                        current = i + 1;
+                    } else {
+                        current = 0;
+                    }
+                }
+            }
+         } else if (current < packages.length - 1) {
             current++;
         } else {
             current = 0;
@@ -64,7 +87,7 @@ public class AppSettings {
         e.putInt(KEY_CURRENT , current);
         e.commit();
 
-        return set.toArray(new String[0])[current];
+        return packages[current];
     }
 
     public void setPackages(Set<String> packages) {

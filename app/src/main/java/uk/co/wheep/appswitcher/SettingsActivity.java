@@ -1,13 +1,18 @@
 package uk.co.wheep.appswitcher;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import java.util.List;
 
 import uk.co.wheep.appswitcher.util.AppSettings;
 
@@ -41,10 +46,15 @@ public class SettingsActivity extends PreferenceActivity {
 
         if (maps) {
 
+            // get current app name
+            String lastPackage = getLastPackage();
+            Log.d(TAG,"lastPackage = " + lastPackage);
+
             // Do app switcher
             AppSettings settings = new AppSettings(this);
-            String pkg = settings.getNextPackage();
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pkg);
+            String nextPackage = settings.getNextPackage(lastPackage);
+            Log.d(TAG,"nextPackage = " + nextPackage);
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(nextPackage);
             if (launchIntent != null) {
                 startActivity(launchIntent);
             }
@@ -55,6 +65,21 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.settings_prefs);
         }
 
+    }
+
+    private String getLastPackage() {
+        ActivityManager activityManager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+
+        if (appProcesses == null)
+            return null;
+
+        // No guarantee this will work, apparently :O
+        ActivityManager.RunningAppProcessInfo appProcess = appProcesses.get(1);
+        if (appProcess != null)
+            return appProcess.processName;
+        else
+            return null;
     }
 
     @Override
